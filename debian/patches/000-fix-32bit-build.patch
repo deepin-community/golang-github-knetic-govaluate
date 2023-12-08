@@ -1,0 +1,38 @@
+From 125f3e0ddaa0548ead38eda365ad7e7d84bbe096 Mon Sep 17 00:00:00 2001
+From https://github.com/Knetic/govaluate/pull/147
+From: Pascal Terjan <pterjan@gmail.com>
+Date: Tue, 29 Dec 2020 17:58:01 +0000
+Subject: [PATCH] Fix evaluation_test on 32 bit architectures
+
+Before this patch this is the result on i586:
+
+# github.com/Knetic/govaluate [github.com/Knetic/govaluate.test]
+./evaluation_test.go:1166:6: constant 2887057409 overflows int
+./evaluation_test.go:1178:6: constant 2887057409 overflows int
+FAIL	github.com/Knetic/govaluate [build failed]
+---
+ evaluation_test.go | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/evaluation_test.go b/evaluation_test.go
+index a2b65e8..94d0c6f 100644
+--- a/evaluation_test.go
++++ b/evaluation_test.go
+@@ -1163,7 +1163,7 @@ func TestParameterizedEvaluation(test *testing.T) {
+ 			Parameters: []EvaluationParameter{
+ 				EvaluationParameter{
+ 					Name:  "foo",
+-					Value: 2887057409,
++					Value: int64(2887057409),
+ 				},
+ 			},
+ 			Expected: true,
+@@ -1175,7 +1175,7 @@ func TestParameterizedEvaluation(test *testing.T) {
+ 			Parameters: []EvaluationParameter{
+ 				EvaluationParameter{
+ 					Name:  "foo",
+-					Value: 2887057409,
++					Value: int64(2887057409),
+ 				},
+ 			},
+ 			Expected: true,
